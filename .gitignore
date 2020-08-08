@@ -1,32 +1,252 @@
-# Prerequisites
-*.d
+#include <iostream>
+#include <ctime>
+#include <stdlib.h>
+#include <conio.h>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+using namespace std;
 
-# Precompiled Headers
-*.gch
-*.pch
+void draw_table(); //draw the table
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+void validation(); //validates if the box is occupied
 
-# Fortran module files
-*.mod
-*.smod
+void retry(); // are now man
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+void ia_turn(); // turn of ia
 
-# Executables
-*.exe
-*.out
-*.app
+void player_turn(); //turn of player
+
+void win();
+
+char player = 'X'; //player icon
+
+int turn = 1;
+
+int  confirm_turn = 2;
+
+bool you_win = true;
+
+int x = 0; 
+
+char board[3][3] = {
+
+{'1','2','3'},
+{'4','5','6'},
+{'7','8','9'}
+
+};
+
+/////////////////////////////////////////////////////////////////////////
+
+int main(){
+ 
+ while(you_win){
+ 
+system("cls");
+draw_table();
+player_turn();
+validation();
+draw_table();
+win();
+ if(you_win == false) {
+ 	break;
+	exit(-1);
+}
+system("cls");
+ia_turn();
+validation();
+win(); if(you_win == false) { break;
+
+	exit(-1);
+}
+
+}
+
+cout<"has ganado";
+getch();
+   return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+void draw_table(){
+	
+	turn++;
+
+	for(int i = 0; i<3; i++){
+		
+		for(int j = 0; j<3; j++){
+			
+			cout<<board[i][j];
+				cout<<" ";
+		}
+		cout<<endl;
+	}
+}
+
+void validation(){
+
+	//check if the box is occupied if this is it, try again
+	
+	switch(x){
+		case 1: 
+		if (board[0][0] != 'X' && board[0][0] != 'O'){
+			board[0][0] = player;
+		}else{
+		retry();
+		}
+		break;
+			case 2: 
+		if (board[0][1] != 'X' && board[0][1] != 'O'){
+			board[0][1] = player;
+		}else{
+		retry();
+		}
+		break;
+			case 3: 
+		if (board[0][2] != 'X' && board[0][2] != 'O'){
+			board[0][2] = player;
+		}else{
+		 	retry();
+		}
+		break;
+			case 4: 
+		if (board[1][0] != 'X' && board[1][0] != 'O'){
+			board[1][0] = player;
+		}else{
+			retry();
+		}
+		break;
+			case 5: 
+		if (board[1][1] != 'X' && board[1][1] != 'O'){
+			board[1][1] = player;
+		}else{
+		 	retry();
+		}
+		break;
+			case 6: 
+		if (board[1][2] != 'X' && board[1][2] != 'O'){
+			board[1][2] = player;
+		}else{
+		 	retry();
+		}
+		break;
+			case 7: 
+		if (board[2][0] != 'X' && board[2][0] != 'O'){
+			board[2][0] = player;
+		}else{
+		 	retry();
+		}
+		break;
+			case 8: 
+		if (board[2][1] != 'X' && board[2][1] != 'O'){
+			board[2][1] = player;
+		}else{
+		 	retry();
+		}
+		break;
+			case 9: 
+		if (board[2][2] != 'X' && board[2][2] != 'O'){
+			board[2][2] = player;
+		}else{
+			retry();
+		}
+		break;
+		
+		default : 	retry();
+		
+	}
+	
+
+	
+}
+
+void retry(){
+
+if(turn %2 == 0){
+	player = 'X';
+	cout<<"numero invalido/ocupado";
+	cout<<"\nintenta de nuevo: ";
+	cin>>x;
+	validation();
+}else{
+	int y;
+	player = 'O';
+	srand(time(NULL));
+y = 1 + rand()%(10-1);
+x = y;
+cout<<x;
+	validation();
+}
+
+}
+
+
+void player_turn(){
+
+player = 'X';
+cout<<"Tu turno: ";
+cin>>x;
+
+}
+
+void ia_turn(){
+player = 'O';
+
+cout<<"turno del oponente: ";
+int y;
+srand(time(NULL));
+y = 1 + rand()%(10-1);
+x = y;
+}
+
+
+ 
+void win(){
+
+if (board[0][0] == 'X' || board[0][0] == 'O'){
+	if(board[0][0] == board[0][1] && board[0][0] == board[0][2]){
+	you_win = false;	
+	}
+	
+}
+	if (board[0][0] == 'X' || board[0][0] == 'O' ){
+		if(board[1][0] == board[0][0] && board[2][0] == board[0][0]){
+		you_win = false;	     // funcion ganadora
+		}
+	}
+	if(board[2][2] == 'X' || board[2][2] == 'O'){
+		if(board[2][1] == board[2][2] && board[2][0] == board[2][2]){
+		you_win = false;	//win
+		}
+	}
+	if(board[2][2] == 'X' || board[2][2] == 'O'){
+		if(board[1][2] == board[2][2] && board[0][2] == board[2][2]){
+		you_win = false;	//win
+		}
+	}
+	// 5 , 7, 3
+	if(board[1][1] == 'X' || board[1][1] == 'O'){ // 5
+		if(board[2][0] == board[1][1] && board[2][0] == board[1][1]){ // 7 & 2
+		you_win = false;	//win
+		}
+	}
+	// 1, 5 , 6
+	if(board[0][0] == 'X' || board[0][0] == 'O'){ // 1
+		if(board[1][1] == board[0][0] && board[2][2] == board[0][0]){ // 5 & 9
+		you_win = false;	//win
+		}
+	}
+	// 4, 5, 6
+	if(board[1][0] == 'X' || board[1][0] == 'O'){ //4
+		if(board[1][1] == board[1][0] && board[1][2] == board[1][0]){ // 5 & 6
+		you_win = false;	//win 
+		}
+	}
+	// 2, 5, 8
+	if(board[0][1] == 'X' || board[0][1] == 'O'){ // 2
+		if(board[1][1] == board[0][1] && board[2][1] == board[0][1]){ // 5
+			you_win = false;	//win
+		}
+	}
+
+}
